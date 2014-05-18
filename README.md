@@ -1,17 +1,17 @@
 Angular Meta CRUD
 =================
 
-Purpose of this project is design set of set of libraries for fast creating of
-admin interfaces on client site.
+Purpose of this project is to design set of libraries for fast creating of
+CRUD interfaces rendered on the client side.
 
-Particulary it is:
+Particularly it is:
 
 * generating forms
 * breadcrumb
 * model (resource) metadata description
-* Basic controller for CRUD operation (like
+* Basic controller for CRUD operations (like
   [inherited_resources](https://github.com/josevalim/inherited_resources)
-  on client side.
+  on the client side.
 * Design meta data (in JSON) which could be provided by server side
   to:
   * privde automatic form field (e.g. model field) validation
@@ -28,6 +28,14 @@ Intences about this idea are influenced by rugy gems:
   * [basepack](https://github.com/lksv/basepack)
   * rails_admin
   * active_admin
+
+## Road Map
+
+1. Scatch overall design
+2. Devide to small separate components which should be used individually
+3. Model the API for recieving the metadata from the server. Fix the
+   (JSON) data structure
+4. Implement designed components
 
 ### Resource
 
@@ -178,7 +186,7 @@ Form field has following attributes:
   * [rails admin](https://github.com/sferik/rails_admin)
   * [active admin](https://github.com/gregbell/active_admin)
 * Angular Related:
-  * [angular-schema-form](https://github.com/gaslight/angular-schema-form/blob/master/app/js/schemaFormFields.js.coffee)
+  * [angular-schema-form](https://github.com/gaslight/angular-schema-form/)
     [Building AngularJS Forms with JSON Schema](http://gaslight.co/blog/building-angularjs-forms-with-json-schema)
   * [issue ui-input](https://github.com/angular-ui/angular-ui-OLDREPO/pull/191)
   * [simple field directive](http://plnkr.co/edit/3zMsNnpNfOFwExSqLj2I?p=preview) (in plunkr)
@@ -201,6 +209,7 @@ Form field has following attributes:
   * [JSON Schema](http://json-schema.org/documentation.html)
     * [JSON Hyper-Schema](http://json-schema.org/latest/json-schema-hypermedia.html)
     * [JSON Schema Validation](http://json-schema.org/latest/json-schema-validation.html)
+  * [JSON Hypermedia Api with forms and links](stackoverflow.com/questions/13542335/json-hypermedia-api-with-forms-and-links)
 
 
 

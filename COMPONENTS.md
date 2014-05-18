@@ -10,6 +10,7 @@ Template usually references:
    * bottom - Save, Cancel, Save and Next, Destroy, e.g. defined on resource
  * form
  * view type form switcher -- isn't it part of form itself?
+ * Flash messages
 
 
 ##Navbar
@@ -55,6 +56,7 @@ depends on:
 
 Form shoud by devided to the groups. Each group has a label.
 
+Form has a Title.
 
 Form shoul contan nested form.
 
