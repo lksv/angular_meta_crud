@@ -1,40 +1,38 @@
 Angular Meta CRUD
 =================
 
-Purpose of this project is to design set of libraries for fast creating of
-CRUD interfaces rendered on the client side.
+The purpose of this project is to design set of libraries for fast development of
+CRUD interfaces that are rendered on the client side.
 
-Particularly it is:
+Particularly:
 
-* generating forms
-* breadcrumb
-* model (resource) metadata description
+* Generating forms
+* Breadcrumbs
+* Model (resource) metadata description
 * Basic controller for CRUD operations (like
   [inherited_resources](https://github.com/josevalim/inherited_resources)
   on the client side.
-* Design meta data (in JSON) which could be provided by server side
-  to:
-  * privde automatic form field (e.g. model field) validation
-  * generate a form
-  * describe routes (to be able to show breadcrumb, proper render
-    and navigate between association and controller's actions)
+* Design metadata format (in JSON) which can be used by server side:
+  * to provide automatic form field (e.g. model field) validation
+  * to generate a form
+  * to describe routes (to be able to show breadcrumb, properly render
+    and navigate among associations and controller's actions)
 
 
-Intences about this idea are influenced by rugy gems:
+This idea was inspired and influenced by ruby gems:
 
 * inherited_resources
 * [SimpleForm](https://github.com/plataformatec/simple_form) and [Formtastic](https://github.com/justinfrench/formtastic)
-* Admin interfaces
+* CRUD interfaces
   * [basepack](https://github.com/lksv/basepack)
   * rails_admin
   * active_admin
 
 ## Road Map
 
-1. Scatch overall design
-2. Devide to small separate components which should be used individually
-3. Model the API for recieving the metadata from the server. Fix the
-   (JSON) data structure
+1. Describe overall design
+2. Divide into separate (small) components which could be used individually
+3. Model the API for recieving the metadata from the server. Define / choose JSON data structure format
 4. Implement designed components
 
 ### Resource
@@ -43,55 +41,52 @@ Resource is a basic entity which represents data model.
 
 Resource consists of:
 
+* *fields* (e.g. `first_name`, `surname`, `email`)
 * *actions* (e.g. `list`, `create`, `read`)
-* *fields* (e.g. `first name`, `surname`, `email`)
-* *validations*(?)  - NOTE: not sure, usually validations are bounded to
-  the fields, but sometimes you need validation according several
-  fields (RoR uses :base).
-* *Form* - this is forms definition. Each resource should have
-  different views for different actions (e.g. `show`, `edit`) as well
-  as several views for same action (e.g. "view items as list" vs "view
-  items as grid of icons", or "fast edit", "detail edit").
-  Probably *Form* should be edit form as well as the template rendered
-  for `show` action (e.g. without the ability to edit) or even teplate
+* *validations* (NOTE: not sure) -  validations are usually bound to
+  the fields, but sometimes you need validations related to several
+  fields (for example Ruby on Rails uses :base).
+* *forms* - This defines structure how model (resource) is presented (rendered) for end user. It can be used for forms or parts of views. Each resource should have different views for different actions (e.g. `show`, `edit`) as well
+  as several views for the same action (e.g. "view items as list", "view
+  items as "grid of icons" or "fast edit", "detail edit").
+  Let's use term *Form* for forms as well as the template rendered
+  for `show` action (e.g. without the ability to edit) or even template
   renedered for `index` action).
-* *Nesting* and routes. Resource sould be nested in another resource (e.g. "Project has many
-  Tasks" and inverse "Tasks belongs to Project"). Nesting resources
-  might or might not reflect the (REST API) URL of the resource. Offten
-  nesting of REST APIs URLs reflect the breadcrumb and you can access
-  the same resource by several URLs).
+* *Nesting* and routes. Resource could be nested in another resource (e.g. "Project has many
+  tasks" and inverse "Tasks belongs to project"). Nesting of resources
+  may or may not be reflected in (REST API) URLs of the resource. Most of the time
+  nesting is reflected in the breadcrumb and you can access
+  the same resource by several URLs.
 * *authorization* Set of rules how to authorize a resource. (e.g. only some users can perform some resource
-  actions => e.g. some users might not see "Edit" button). The presented
-  resource view may be dependant on the user roles (e.g. admin see
-  resource view with all fields, operator with almost all and customer
-  with a few particular).
+  actions => e.g. some users are not allowed to edit resource so they should not see "Edit" button). The presented
+  resource view is dependant on the user roles (e.g. admin can see
+  resource view with all fields, operator see almost all fields and customer see few particular fields).
 
 ### Field
 Consist of:
 
-* Field type (text, string, integer, boolean, association, ...). Field type is used for storage
-  the field. For instance filed type `text` should be presented as
-  `<textarea>` or wysiwyg to the user.
+* Field type: Some of the field types are text, string, integer, boolean, association, etc. Field type is used for storage of
+  the field content.
 
   Special field types are associations:
-  * belongs_to association - it should be presented selectbox or create new item.
-  * has_many association - it should be presended as selectbox(multi:
+  * belongs_to association - it should be presented as selectbox or offer possiblity to create new item.
+  * has_many association - it should be presented as selectbox(multiple:
     true) or nested form.
 
-* Filed preseted type. How to present the value to the user in the form. e.g. for string type is should be Richtext, textarea, textline.
+* Filed presented type: How to present the value to the user in the form for example string type could be Richtext, textarea, textline.
+  Filed type `text` could be presented as `<textarea>` or wysiwyg editor to the user.
 
 * validations
 * read_only
-* stripping(?) - e.g. spaces are removed form beginning and end of the
-  input.
-* virtual_field(?) - e.g. getter/setter (on client and server, on server only).
+* virtual_fields(?) - e.g. getter/setter (on the client and the server, or server only).
+* stripping(?) - e.g. spaces are removed form beginning and end of the input.
 
-Field behaviour:
-* visibility could be related to:
+* Field behaviour:
+  Visibility could be related to:
   * authorization
   * value of another fields (for Angular lets say "state of the form model")
 
-The filed attributes are really a lot. Some of them shoud be more a
+The filed attributes are really numerous. Some of them shoud be more a
 attributes of the form (e.g. show to show) and some of the model.
 
 ### Action
@@ -101,13 +96,13 @@ Notes:
   * action buttons in form and show and index page like 'Edit', 'Update', 'Show', 'Delete' but also 'Back to Overview', 'Cancel'
   * should be put in the nav bar.
 
-Should be persisted by:
+Should be represented by:
 * action name
 * method (GET, PUT, POST, PATCH, DELETE)
 * params:
    * name
    * mandatory/optional
-* authorization (access controll) - on client side it means moreless visibility contorll
+* authorization (access controll) - on the client side it means (more or less) visibility control
 * action label
 * action icon
 
@@ -119,7 +114,7 @@ Notes:
 * resources could be nested by several routes
 * user is usually aware of nesting by breadcrumb and/or nested form
   (e.g. gem [nested_form](https://github.com/ryanb/nested_form))
-* nested resources usually reflects an resource association 
+* nested resources usually reflects an resource association
 
 In controller usually implemented by:
 * array of paths. Each path define possible nesting.
@@ -129,7 +124,7 @@ e.g.
 
 or
 
-`Comment` is nested in `[Project, Tash] and [Project] and [File]`
+`Comment` is nested in `[Project, Task] and [Project] and [File]`
 The url can be:
 ```
 /project/1/task/13/comments
@@ -138,13 +133,13 @@ The url can be:
 ```
 
 ## Form
-For this project we are focusted to the *Forms*.
+For this project we are focused to the *Forms*.
 
 Generaly Form consists of containers. This containers may be futher
 nested. For example Form has several tabs and each tab should have
 several sections (groups).
 
-Form consist of fields. Each field contains all the information 
+Form consist of fields. Each field contains all the information
 how to present it to the user, how to build its model and the validation.
 
 Form field has following attributes:
@@ -166,22 +161,22 @@ Form field has following attributes:
 
 ## CRUD requirements
 
-* I do not want to write validation rules twice (server and clinet). See [Formtastic]() or [Simpleform]().
-* Server side validatiion - invalid fields needs to propagated to the form.
+* I do not want to write validation rules twice (on server and clinet). See [Formtastic]() or [Simpleform]().
+* Server side validation - invalid fields are propagated to the form.
 * DRY: define common actions like (create, update, destory) by directive(?).
   See [Inherited resources](https://github.com/josevalim/inherited_resources),
   [angular-app crud](https://github.com/angular-app/angular-app/blob/master/client/src/common/directives/crud/crud.js).
   (e.g. update action should send PUT request. When suceess route to defined state and show flash message.
-  When sever side validation fails highlite invalid fields (and show error message). etc.)
+  When sever side validation fails highlight invalid fields (and show error message). etc.)
 
 ## Open questions
 
-* Hot to manage, that only partial metadata shoud be used individually.
+* How to manage, that only partial metadata shoud be used individually.
   e.g. server shoud provide only metadata for validation and that shoud
   be applied to all the client side forms (for that resource).
 
 ## Related projects, articles, APIS
-* Admin Interfaces:
+* CRUD Interfaces:
   * [Basepack](https://github.com/lksv/basepack BasePack)
   * [rails admin](https://github.com/sferik/rails_admin)
   * [active admin](https://github.com/gregbell/active_admin)
